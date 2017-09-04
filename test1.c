@@ -17,7 +17,7 @@
 #define SENSORUPDATEMS 10
 #define ROBOTTASKTIMEMS 100
 #define SPIFIRSTREAD 124
-
+#define SENSORTHRESHOLD 128
 
 
 
@@ -79,7 +79,15 @@ uint8_t leerMemoriaEeprom()
 	return tarea;
 }
 
-
+//1us+5us+1us=7us
+uint8_t leerSensor()
+{
+	printf("leerSensor\n");
+	SPISensorEnable();//1us
+	uint8_t valorSensor = SPIRead();//5us
+	SPISensorDisable();//1us
+	return valorSensor;
+}
 
 
 
@@ -97,6 +105,14 @@ void RobotTask(uint8_t u8Command)
 	printf("RobotTask (end): %d\n", u8Command);
 }
 
+void RobotStop(void)
+{
+	//tiempo 15us
+	printf("RobotStop\n");
+}
+
+
+
 ///TIMER
 
 void TimerInit(void)
@@ -110,6 +126,22 @@ void TimerInit(void)
 //Interrupt void TimerISR(void) --> simulado por
 void TimerISR(void)
 {
+	printf("-->interrupcion timer!\n");
+	uint8_t valorSensor = leerSensor();
+
+	if(valorSensor>SENSORTHRESHOLD)
+	{
+		stop_timer();
+		RobotStop();
+		objetoDetectado=1;
+		printf("objetoDetectado: %d\n", objetoDetectado);
+
+	}
+	else
+	{
+		objetoDetectado=0;
+		printf("objetoDetectado: %d\n", objetoDetectado);
+	}
 }
 
 uint32_t TimetGetus(void)
@@ -144,6 +176,18 @@ void SPIEepromDisable(void)
 {
 	//tiempo 1us
 	printf("\tSPIEepromDisable\n");
+}
+
+void SPISensorEnable(void)
+{
+	//tiempo 1us
+	printf("\tSPISensorEnable\n");
+}
+
+void SPISensorDisable(void)
+{
+	//tiempo 1 us
+	printf("\tSPISensorDisable\n");
 }
 
 //simula leer diferentes valores por cada llamada
