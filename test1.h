@@ -39,6 +39,8 @@ void TimerInit(void);
 //Interrupt void TimerISR(void);
 void TimerISR(void);
 
+uint32_t TimetGetus(void);
+
 
 
 

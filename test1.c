@@ -51,6 +51,8 @@ void ejecucionSistema()
 void finalizacion()
 {
 	printf("finalizacion\n");
+	uint32_t usExe = TimetGetus();
+	printf("Han pasado %dus desde la inicialización del temporizador\n", usExe);
 }
 
 
@@ -74,6 +76,15 @@ void TimerInit(void)
 void TimerISR(void)
 {
 }
+
+uint32_t TimetGetus(void)
+{
+	uint32_t usNumber = 10;
+	printf("TimetGetus: %d\n", usNumber);
+	return usNumber;
+}
+
+
 
 
 
