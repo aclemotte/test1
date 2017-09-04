@@ -21,12 +21,23 @@ void finalizacion(void);
 
 
 
+///Funciones secundarias
+
+
+uint8_t leerMemoriaEeprom();
+
 
 
 
 
 
 ///Funciones API
+
+///ROBOT
+
+
+void RobotTask(uint8_t u8Command);
+
 
 
 
@@ -51,3 +62,8 @@ uint32_t TimetGetus(void);
 
 void SPIInit(void);
 
+void SPIEepromEnable(void);
+
+void SPIEepromDisable(void);
+
+uint8_t SPIRead(void);
